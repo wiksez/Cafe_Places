@@ -1,0 +1,11 @@
+<ul>
+    {% for drink in drinks %}
+        <li>{{ drink.name }},
+            {% if drink.type_is_hot %}
+                Type: hot
+            {% else %}
+                Type: cold
+            {% endif %}</li>
+    {% endfor %}
+</ul>
+<p><a href="{% url 'add_drink' %}">Dodaj drink</a></p>

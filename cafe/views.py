@@ -1,5 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.views import View
+
+from cafe.forms import DrinksForm
+from cafe.models import Drinks
+
 # Create your views here.
 """
 A. użytkownik nie zarejestrowany. Ma dostęp do następnych widoków:
@@ -21,5 +26,24 @@ C. 2-3 administratora mogą:
 
 
 def index(request):
-    return HttpResponse("Głowna strona działa!")
+    return render(request, 'main.html')
+
+
+class AddDrinks(View):
+
+    def get(self, request):
+        form = DrinksForm()
+        return render(request, 'add_drink.html', {'form': form})
+
+    def post(self, request):
+        form = DrinksForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+
+
+class DrinksList(View):
+    def get(self, request):
+        drinks = Drinks.objects.all()
+        return render(request, 'drinks_list.html', {'drinks': drinks})
 
