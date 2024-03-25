@@ -1,3 +1,5 @@
+{% extends 'main.html' %}
+{% block content %}
 <ul>
     {% for drink in drinks %}
         <li>{{ drink.name }},
@@ -9,3 +11,4 @@
     {% endfor %}
 </ul>
 <p><a href="{% url 'add_drink' %}">Dodaj drink</a></p>
+{% endblock %}

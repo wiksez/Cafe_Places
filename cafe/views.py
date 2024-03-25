@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views import View
 
-from cafe.forms import DrinksForm
-from cafe.models import Drinks
+from cafe.forms import DrinksForm, DessertsForm
+from cafe.models import Drinks, Desserts
 
 # Create your views here.
 """
@@ -46,4 +46,22 @@ class DrinksList(View):
     def get(self, request):
         drinks = Drinks.objects.all()
         return render(request, 'drinks_list.html', {'drinks': drinks})
+
+
+class AddDessert(View):
+    def get(self, request):
+        form = DessertsForm()
+        return render(request, 'add_dessert.html', {'form': form})
+
+    def post(self, request):
+        form = DessertsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+
+
+class DessertsList(View):
+    def get(self, request):
+        desserts = Desserts.objects.all()
+        return render(request, 'desserts_list.html', {'desserts': desserts})
 

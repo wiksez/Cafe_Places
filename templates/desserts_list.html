@@ -1,0 +1,9 @@
+{% extends 'main.html' %}
+{% block content %}
+    {% for dessert in desserts %}
+        <h2>{{ dessert.name }}</h2>
+        <p>{{ dessert.description }}</p>
+        <p>{{ dessert.composition }}</p>
+    {% endfor %}
+    <p><a href="{% url 'add_dessert' %}">Dodaj deser</a></p>
+{% endblock %}
