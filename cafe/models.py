@@ -4,20 +4,26 @@ from django.contrib.auth.models import User
 
 
 class Drinks(models.Model):
-    name = models.CharField(max_length=64)
+    name = models.CharField('Napój', max_length=64)
     price = models.FloatField(default=0)
-    type_is_hot = models.BooleanField(default=True)
+    type_is_hot = models.BooleanField('Hot drink', default=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Desserts(models.Model):
-    name = models.CharField(max_length=64)
+    name = models.CharField('Deser', max_length=64)
     description = models.TextField()
     price = models.FloatField(default=0)
     composition = models.CharField(max_length=256)
 
+    def __str__(self):
+        return self.name
+
 
 class CoffeeShop(models.Model):
-    name = models.CharField(max_length=128)
+    name = models.CharField('Kawiarnia', max_length=128)
     description = models.TextField()
     drinks = models.ManyToManyField(Drinks)
     desserts = models.ManyToManyField(Desserts)
@@ -27,6 +33,9 @@ class CoffeeShop(models.Model):
     ranking = models.FloatField(default=0)
     start_of_work = models.TimeField()
     end_of_work = models.TimeField()
+
+    def __str__(self):
+        return self.name
 
 
 class Favorite(models.Model):
