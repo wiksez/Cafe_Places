@@ -71,3 +71,15 @@ class Registration(View):
         form = RegistrationForm()
         return render(request, 'registration.html', {'form': form})
 
+    def post(self, request):
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            pass1 = form.cleaned_data.get('password1')
+            pass2 = form.cleaned_data.get('password2')
+            if pass1 is not None and pass1 == pass2:
+                user.set_password(pass1)
+                user.save()
+                return redirect('home')
+        return render(request, 'registration.html', {'form': form})
+

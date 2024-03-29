@@ -9,8 +9,10 @@ div.header {
     color: #864AF9;
     margin-left: 10%;
     margin-right: 10%;
+    margin-bottom: 8px;
     font-size: 16px;
     height: 20%;
+    padding-bottom: 15px;
 }
 div.content {
     background-color: lightcyan;
@@ -34,8 +36,15 @@ a:hover {
     color: #3E3232;
 }
 h1 {
-    margin-top: 0;
+    margin: 0;
+    padding: 0;
     font-size: 3em;
+    text-align: center;
+}
+h2 {
+    margin: 0;
+    padding: 10px;
+    font-size: 2em;
     text-align: center;
 }
 p {
@@ -47,4 +56,5 @@ li {
 form {
     text-align: right;
     padding-right: 40%;
+    padding-bottom: 20px;
 }
