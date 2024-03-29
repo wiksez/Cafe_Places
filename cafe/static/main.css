@@ -1,6 +1,7 @@
 body {
-    background-color: #3E3232;
+    background-color: lightblue;
     margin: 0;
+    font-family: Montserrat, sans-serif;
 }
 
 div.header {
@@ -9,17 +10,25 @@ div.header {
     margin-left: 10%;
     margin-right: 10%;
     font-size: 16px;
+    height: 20%;
 }
 div.content {
-    background-color: #FDAF7B;
+    background-color: lightcyan;
     margin-left: 10%;
     margin-right: 10%;
+    height: 80%;
 }
 a {
     color: chocolate;
     padding: 9px;
     font-size: 2em;
     text-decoration: none;
+}
+.registration {
+    display: inline-block;
+    margin-right: 20px;
+    float: right;
+    background-color: #ffdc78;
 }
 a:hover {
     color: #3E3232;
@@ -34,4 +43,8 @@ p {
 }
 li {
     font-size: 2em;
+}
+form {
+    text-align: right;
+    padding-right: 40%;
 }

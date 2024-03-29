@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views import View
 
-from cafe.forms import DrinksForm, DessertsForm
+from cafe.forms import DrinksForm, DessertsForm, RegistrationForm
 from cafe.models import Drinks, Desserts
 
 # Create your views here.
@@ -64,4 +64,10 @@ class DessertsList(View):
     def get(self, request):
         desserts = Desserts.objects.all()
         return render(request, 'desserts_list.html', {'desserts': desserts})
+
+
+class Registration(View):
+    def get(self, request):
+        form = RegistrationForm()
+        return render(request, 'registration.html', {'form': form})
 
