@@ -1,0 +1,8 @@
+{% extends 'main.html' %}
+{% block content %}
+    <h2>Kawiarni</h2>
+    {% for shop in shops %}
+        <a href=""><h3>{{ shop.name }}</h3></a>
+        <p class="description">{{ shop.description }}</p>
+    {% endfor %}
+{% endblock %}

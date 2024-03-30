@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.views import View
 
 from cafe.forms import DrinksForm, DessertsForm, RegistrationForm
-from cafe.models import Drinks, Desserts
+from cafe.models import Drinks, Desserts, CoffeeShop
 
 # Create your views here.
 """
@@ -82,4 +82,10 @@ class Registration(View):
                 user.save()
                 return redirect('home')
         return render(request, 'registration.html', {'form': form})
+
+
+class CoffeeShopList(View):
+    def get(self, request):
+        cofeshops = CoffeeShop.objects.all()
+        return render(request, 'coffeeshops.html', {'shops': cofeshops})
 
