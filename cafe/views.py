@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.views import View
-
-from cafe.forms import DrinksForm, DessertsForm, RegistrationForm
+from django.contrib.auth import authenticate, login, logout
+from cafe.forms import DrinksForm, DessertsForm, RegistrationForm, LoginForm
 from cafe.models import Drinks, Desserts, CoffeeShop
 
 # Create your views here.
@@ -89,3 +88,8 @@ class CoffeeShopList(View):
         cofeshops = CoffeeShop.objects.all()
         return render(request, 'coffeeshops.html', {'shops': cofeshops})
 
+
+class LoginView(View):
+    def get(self, request):
+        form = LoginForm()
+        return render(request, 'registration.html', {'form': form})
