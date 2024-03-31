@@ -17,11 +17,20 @@
             <a href="{% url 'shops_list' %}">Kawiarni</a>
             <a href="{% url 'list_of_drinks' %}">Napoje</a>
             <a href="{% url 'list_of_desserts' %}">Desery</a>
+            {% if not user.is_authenticated %}
             <div class="registration">
                 <a class="reg" href="{% url 'registration' %}">Zarejestruj się</a>
                 <a class="reg" href="{% url 'login' %}">Logowanie</a>
             </div>
+            {% else %}
+             <div class="registration">
+                <a class="reg" href="{% url 'registration' %}">Zarejestruj się</a>
+                <a class="reg" href="{% url 'logout' %}">Wyloguj</a>
+            </div>
+                <div><a href="">Twój profil</a></div>
+            {% endif %}
         </div>
+
     </div>
     <div class="content">
         {% block content %}

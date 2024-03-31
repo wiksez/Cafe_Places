@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
 from cafe.forms import DrinksForm, DessertsForm, RegistrationForm, LoginForm
@@ -93,3 +94,21 @@ class LoginView(View):
     def get(self, request):
         form = LoginForm()
         return render(request, 'registration.html', {'form': form})
+
+    def post(self, request):
+        redirect_url = request.GET.get('next', reverse('home'))
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect(redirect_url)
+        return render(request, 'registration.html', {'form': form})
+
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect('home')
