@@ -3,7 +3,8 @@ from django.urls import reverse
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
 from cafe.forms import DrinksForm, DessertsForm, RegistrationForm, LoginForm
-from cafe.models import Drinks, Desserts, CoffeeShop
+from cafe.models import Drinks, Desserts, CoffeeShop, Feedback
+from django.contrib.auth.models import User
 
 # Create your views here.
 """
@@ -112,3 +113,25 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return redirect('home')
+
+
+class MenuDrinks(View):
+    def get(self, request, id):
+        shop = CoffeeShop.objects.get(pk=id)
+        drinks = shop.drinks.all()
+        return render(request, 'menu_drinks.html', {'shop': shop, 'drinks': drinks})
+
+
+class MenuDesserts(View):
+    def get(self, request, id):
+        shop = CoffeeShop.objects.get(pk=id)
+        desserts = shop.desserts.all()
+        return render(request, 'menu_desserts.html', {'shop': shop, 'desserts': desserts})
+
+
+class CoffeShopDetails(View):
+    def get(self, request, id):
+        shop = CoffeeShop.objects.get(pk=id)
+        drinks = shop.drinks.all()
+        desserts = shop.desserts.all()
+        return render(request, 'coffe_shop_details.html', {'shop': shop, 'drinks': drinks, 'desserts': desserts})

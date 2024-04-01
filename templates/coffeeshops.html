@@ -2,7 +2,7 @@
 {% block content %}
     <h2>Kawiarni</h2>
     {% for shop in shops %}
-        <a href=""><h3>{{ shop.name }}</h3></a>
+        <a href="{% url 'shop_details' shop.id %}"><h3>{{ shop.name }}</h3></a>
         <p class="description">{{ shop.description }}</p>
     {% endfor %}
 {% endblock %}

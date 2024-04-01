@@ -1,0 +1,31 @@
+{% extends 'main.html' %}
+{% block menu %}
+    <div>
+        <a href="{% url 'shop_details' shop.id %}">Strona kawiarni</a>
+        <a href="{% url 'menu_drinks' shop.id %}">Napoje</a>
+        <a href="{% url 'menu_desserts' shop.id %}">Desery</a>
+        <a href="">Opinii</a>
+        <a href="">Kontakty</a>
+    </div>
+    <div>
+        <h2>Lista napojów {{ shop.name }}</h2>
+        <table>
+            <tr>
+                <th>Nazwa</th>
+                <th>Cena</th>
+                <th>Typ napoju</th>
+            </tr>
+            {% for drink in drinks %}
+                <tr>
+                    <td>{{ drink.name }}</td>
+                    <td>{{ drink.price }}</td>
+                    {% if drink.type_is_hot %}
+                    <td>Gorący napój</td>
+                    {% else %}
+                    <td>Zimny napój</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

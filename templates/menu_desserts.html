@@ -1,0 +1,29 @@
+{% extends 'main.html' %}
+{% block menu %}
+    <div>
+        <a href="{% url 'shop_details' shop.id %}">Strona kawiarni</a>
+        <a href="{% url 'menu_drinks' shop.id %}">Napoje</a>
+        <a href="{% url 'menu_desserts' shop.id %}">Desery</a>
+        <a href="">Opinii</a>
+        <a href="">Kontakty</a>
+    </div>
+    <div>
+        <h2>Lista deserów {{ shop.name }}</h2>
+        <table>
+            <tr>
+                <th>Nazwa</th>
+                <th>Cena</th>
+                <th>Opis</th>
+                <th>Skład</th>
+            </tr>
+            {% for dessert in desserts %}
+                <tr>
+                    <td>{{ dessert.name }}</td>
+                    <td>{{ dessert.price }}</td>
+                    <td>{{ dessert.description }}</td>
+                    <td>{{ dessert.composition }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

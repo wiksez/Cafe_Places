@@ -1,0 +1,13 @@
+{% extends 'main.html' %}
+{% block content %}
+<h2>{{ shop.name }}</h2>
+    <div>
+        <a href="{% url 'menu_drinks' shop.id %}">Napoje</a>
+        <a href="{% url 'menu_desserts' shop.id %}">Desery</a>
+        <a href="">Opinii</a>
+        <a href="">Kontakty</a>
+    </div>
+    <div>
+        <p class="description">{{ shop.description }}</p>
+    </div>
+{% endblock %}

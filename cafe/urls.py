@@ -11,5 +11,8 @@ urlpatterns = [
     path('registration/', views.Registration.as_view(), name="registration"),
     path('cofeeshops/', views.CoffeeShopList.as_view(), name="shops_list"),
     path('login/', views.LoginView.as_view(), name='login'),
-    path('logout', views.LogoutView.as_view(), name='logout')
+    path('logout', views.LogoutView.as_view(), name='logout'),
+    path('more_details/<int:id>/', views.CoffeShopDetails.as_view(), name='shop_details'),
+    path('menu_drinks/<int:id>', views.MenuDrinks.as_view(), name='menu_drinks'),
+    path('menu_desserts/<int:id>', views.MenuDesserts.as_view(), name='menu_desserts')
 ]
