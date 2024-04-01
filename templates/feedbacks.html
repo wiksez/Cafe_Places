@@ -1,0 +1,8 @@
+{% extends 'main.html' %}
+{% block content %}
+    {% for comment in comments %}
+        <h3>{{ comment.user.username }}</h3>
+        <p>{{ comment.text }}</p>
+        <p>{{ comment.date }} {{ comment.coffees.name }}</p>
+    {% endfor %}
+{% endblock %}

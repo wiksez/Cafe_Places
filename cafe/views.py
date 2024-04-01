@@ -135,3 +135,9 @@ class CoffeShopDetails(View):
         drinks = shop.drinks.all()
         desserts = shop.desserts.all()
         return render(request, 'coffe_shop_details.html', {'shop': shop, 'drinks': drinks, 'desserts': desserts})
+
+
+class FeedbacksList(View):
+    def get(self, request):
+        comments = Feedback.objects.all()
+        return render(request, 'feedbacks.html', {'comments': comments})

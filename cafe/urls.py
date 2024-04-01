@@ -14,5 +14,6 @@ urlpatterns = [
     path('logout', views.LogoutView.as_view(), name='logout'),
     path('more_details/<int:id>/', views.CoffeShopDetails.as_view(), name='shop_details'),
     path('menu_drinks/<int:id>', views.MenuDrinks.as_view(), name='menu_drinks'),
-    path('menu_desserts/<int:id>', views.MenuDesserts.as_view(), name='menu_desserts')
+    path('menu_desserts/<int:id>', views.MenuDesserts.as_view(), name='menu_desserts'),
+    path('feedbacks/', views.FeedbacksList.as_view(), name='feedbacks')
 ]
