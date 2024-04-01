@@ -141,3 +141,9 @@ class FeedbacksList(View):
     def get(self, request):
         comments = Feedback.objects.all()
         return render(request, 'feedbacks.html', {'comments': comments})
+
+
+class Contacts(View):
+    def get(self, request, id):
+        shop = CoffeeShop.objects.get(pk=id)
+        return render(request, 'contacts.html', {'shop': shop})

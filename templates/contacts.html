@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+{% block content %}
+    <h2>Informacja o {{ shop.name }}</h2>
+    <h3>Adres</h3>
+    <p>{{ shop.adres }}</p>
+    <h3>Numer telefonu</h3>
+    <p>{{ shop.phone_number }}</p>
+    <h3>Godziny pracy</h3>
+    <p>Od {{ shop.start_of_work }} do {{ shop.end_of_work }}</p>
+    <h3>Ranking</h3>
+    <p>{{ shop.ranking }}</p>
+{% endblock %}
