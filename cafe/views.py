@@ -156,4 +156,15 @@ class AddComments(View):
         form = CommentsForm()
         return render(request, 'add_comment.html', {'shop': shop, 'form': form})
 
+    def post(self, request, id):
+        form = CommentsForm(request.POST)
+        shop = CoffeeShop.objects.get(pk=id)
+        if form.is_valid():
+            comment = form.cleaned_data['comments']
+            rating = form.cleaned_data['ranking']
+            new_feedback = Feedback.objects.create(user=request.user, text=comment, coffees=shop, rating=rating)
+            new_feedback.save()
+            return redirect('home')
+        return render(request, 'add_comment.html', {'shop': shop, 'form': form})
+
 
