@@ -4,6 +4,7 @@ from django.views import View
 from django.contrib.auth import authenticate, login, logout
 from cafe.forms import DrinksForm, DessertsForm, RegistrationForm, LoginForm, CommentsForm
 from cafe.models import Drinks, Desserts, CoffeeShop, Feedback
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -152,7 +153,7 @@ class Contacts(View):
         return render(request, 'contacts.html', {'shop': shop})
 
 
-class AddComments(View):
+class AddComments(LoginRequiredMixin, View):
     def get(self, request, id):
         shop = CoffeeShop.objects.get(pk=id)
         form = CommentsForm()
