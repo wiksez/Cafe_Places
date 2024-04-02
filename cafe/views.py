@@ -134,7 +134,9 @@ class CoffeShopDetails(View):
         shop = CoffeeShop.objects.get(pk=id)
         drinks = shop.drinks.all()
         desserts = shop.desserts.all()
-        return render(request, 'coffe_shop_details.html', {'shop': shop, 'drinks': drinks, 'desserts': desserts})
+        comments = Feedback.objects.filter(coffees=shop)
+        form = CommentsForm()
+        return render(request, 'coffe_shop_details.html', {'shop': shop, 'drinks': drinks, 'desserts': desserts, 'comments': comments, 'form': form})
 
 
 class FeedbacksList(View):
