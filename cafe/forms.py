@@ -1,5 +1,5 @@
 from django import forms
-from cafe.models import Drinks, Desserts
+from cafe.models import Drinks, Desserts, Feedback
 from django.contrib.auth.models import User
 
 
@@ -29,3 +29,12 @@ class RegistrationForm(forms.ModelForm):
 class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
+
+
+class CommentsForm(forms.Form):
+    comments = forms.CharField(widget=forms.Textarea)
+    ranking = forms.IntegerField()
+
+    class Meta:
+        model = Feedback
+        fields = ['text', 'rating']

@@ -16,5 +16,6 @@ urlpatterns = [
     path('menu_drinks/<int:id>', views.MenuDrinks.as_view(), name='menu_drinks'),
     path('menu_desserts/<int:id>', views.MenuDesserts.as_view(), name='menu_desserts'),
     path('feedbacks/', views.FeedbacksList.as_view(), name='feedbacks'),
-    path('contacts/<int:id>/', views.Contacts.as_view(), name='contacts')
+    path('contacts/<int:id>/', views.Contacts.as_view(), name='contacts'),
+    path('add_comments/<int:id>/', views.AddComments.as_view(), name='add_feedback')
 ]

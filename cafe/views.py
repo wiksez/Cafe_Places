@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
-from cafe.forms import DrinksForm, DessertsForm, RegistrationForm, LoginForm
+from cafe.forms import DrinksForm, DessertsForm, RegistrationForm, LoginForm, CommentsForm
 from cafe.models import Drinks, Desserts, CoffeeShop, Feedback
 from django.contrib.auth.models import User
 
@@ -139,11 +139,21 @@ class CoffeShopDetails(View):
 
 class FeedbacksList(View):
     def get(self, request):
+        form = CommentsForm()
         comments = Feedback.objects.all()
-        return render(request, 'feedbacks.html', {'comments': comments})
+        return render(request, 'feedbacks.html', {'comments': comments, 'form': form})
 
 
 class Contacts(View):
     def get(self, request, id):
         shop = CoffeeShop.objects.get(pk=id)
         return render(request, 'contacts.html', {'shop': shop})
+
+
+class AddComments(View):
+    def get(self, request, id):
+        shop = CoffeeShop.objects.get(pk=id)
+        form = CommentsForm()
+        return render(request, 'add_comment.html', {'shop': shop, 'form': form})
+
+
