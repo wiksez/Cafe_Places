@@ -40,9 +40,9 @@ class CoffeeShop(models.Model):
 
 class Favorite(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    favourite_cafes = models.ForeignKey(CoffeeShop, on_delete=models.CASCADE)
-    favourite_desserts = models.ForeignKey(Desserts, on_delete=models.CASCADE)
-    favourite_drinks = models.ForeignKey(Drinks, on_delete=models.CASCADE)
+    favourite_cafes = models.ForeignKey(CoffeeShop, on_delete=models.CASCADE, null=True)
+    favourite_desserts = models.ForeignKey(Desserts, on_delete=models.CASCADE, null=True)
+    favourite_drinks = models.ForeignKey(Drinks, on_delete=models.CASCADE, null=True)
 
 
 class Feedback(models.Model):

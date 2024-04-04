@@ -1,9 +1,10 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
 from cafe.forms import DrinksForm, DessertsForm, RegistrationForm, LoginForm, CommentsForm
-from cafe.models import Drinks, Desserts, CoffeeShop, Feedback
+from cafe.models import Drinks, Desserts, CoffeeShop, Feedback, Favorite
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 
@@ -169,5 +170,27 @@ class AddComments(LoginRequiredMixin, View):
             new_feedback.save()
             return redirect('home')
         return render(request, 'add_comment.html', {'shop': shop, 'form': form})
+
+
+class AddCafeToMyFavorite(View):
+    def get(self, request, id):
+        cafe = CoffeeShop.objects.get(pk=id)
+        user = request.user
+        my_cafe, created = Favorite.objects.get_or_create(user=user)
+        if created:
+            my_cafe.favourite_cafes = cafe
+            my_cafe.save()
+        else:
+            my_cafe.favourite_cafes = cafe
+            my_cafe.save()
+        messages.add_message(request, messages.INFO, f"udalo sie dodać kawiarnie {cafe.name} do ulubionych")
+        return redirect('shops_list')
+
+
+class MyFavoriteCafe(View):
+    def get(self, request):
+        cafes = Favorite.objects.filter(user=request.user)
+        return render(request, 'my_profile.html', {'my_cafes': cafes})
+
 
 

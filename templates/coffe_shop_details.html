@@ -9,6 +9,7 @@
     </div>
     <div>
         <p class="description">{{ shop.description }}</p>
+        <a href="{% url 'add_favorite_cafe' shop.id %}">Dodać kawiarnię do ulubionych</a>
     </div>
     <div>
     <h4>Dodaj komentarz dla {{ shop.name }}</h4>
