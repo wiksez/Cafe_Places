@@ -29,7 +29,10 @@ C. 2-3 administratora mogą:
 
 
 def index(request):
-    return render(request, 'main.html')
+    if request.user.username == 'Homer_Simpson':
+        return render(request, 'main.html', {'user_is_admin': True})
+    else:
+        return render(request, 'main.html', {'user_is_admin': False})
 
 
 class AddDrinks(View):
@@ -191,6 +194,11 @@ class MyFavoriteCafe(View):
     def get(self, request):
         cafes = Favorite.objects.filter(user=request.user)
         return render(request, 'my_profile.html', {'my_cafes': cafes})
+
+
+class AdminSettings(View):
+    def get(self, request):
+        return render(request, 'admin_profile.html')
 
 
 
