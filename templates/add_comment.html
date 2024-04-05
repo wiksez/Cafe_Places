@@ -1,6 +1,7 @@
 {% extends 'main.html' %}
 {% block content %}
     <h2>Dodaj komentarz dla {{ shop.name }}</h2>
+    {{ message }}
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}

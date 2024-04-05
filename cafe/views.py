@@ -1,8 +1,11 @@
 from django.contrib import messages
+from django.db import IntegrityError
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
+
+
 from cafe.forms import DrinksForm, DessertsForm, RegistrationForm, LoginForm, CommentsForm
 from cafe.models import Drinks, Desserts, CoffeeShop, Feedback, Favorite
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -166,12 +169,16 @@ class AddComments(LoginRequiredMixin, View):
     def post(self, request, id):
         form = CommentsForm(request.POST)
         shop = CoffeeShop.objects.get(pk=id)
-        if form.is_valid():
-            comment = form.cleaned_data['comments']
-            rating = form.cleaned_data['ranking']
-            new_feedback = Feedback.objects.create(user=request.user, text=comment, coffees=shop, rating=rating)
-            new_feedback.save()
-            return redirect('home')
+        try:
+            if form.is_valid():
+                comment = form.cleaned_data['comments']
+                rating = form.cleaned_data['ranking']
+                new_feedback = Feedback.objects.create(user=request.user, text=comment, coffees=shop, rating=rating)
+                new_feedback.save()
+                return redirect('home')
+        except IntegrityError:
+            message = "Już masz opinię o tej kawiarni "
+            return render(request, 'add_comment.html', {'message': message, 'shop': shop, 'form': form})
         return render(request, 'add_comment.html', {'shop': shop, 'form': form})
 
 
