@@ -2,13 +2,15 @@
 {% block content %}
 <ul>
     {% for drink in drinks %}
-        <li>{{ drink.name }},
+        <li>{{ drink.name }}
             {% if drink.type_is_hot %}
                 Type: hot
             {% else %}
                 Type: cold
             {% endif %}</li>
+        <a class="edit_link" href="">Edytować</a>
+        <a class="delete_link" href="">Usunąć</a>
     {% endfor %}
 </ul>
-<p><a href="{% url 'add_drink' %}">Dodaj drink</a></p>
+<p><a class="add_link" href="{% url 'add_drink' %}">Dodaj drink</a></p>
 {% endblock %}

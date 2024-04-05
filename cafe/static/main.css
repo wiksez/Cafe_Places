@@ -20,6 +20,15 @@ div.content {
     margin-right: 10%;
     height: 80%;
 }
+.add_link {
+    color: #4CCD99;
+}
+.edit_link {
+    color: blue;
+}
+.delete_link {
+    color: red;
+}
 a {
     color: chocolate;
     padding: 9px;
