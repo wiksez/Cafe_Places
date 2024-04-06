@@ -223,6 +223,21 @@ class UpdateDrinks(View):
         return render(request, 'update_drink.html', {'form': form})
 
 
+class UpdateDesserts(View):
+    def get(self, request, id):
+        dessert = Desserts.objects.get(pk=id)
+        form = DessertsForm(instance=dessert)
+        return render(request, 'update_dessert.html', {'form': form})
+
+    def post(self, request, id):
+        dessert = Desserts.objects.get(pk=id)
+        form = DessertsForm(request.POST, instance=dessert)
+        if form.is_valid():
+            form.save()
+            return redirect('list_of_desserts')
+        return render(request, 'update_dessert.html', {'form': form})
+
+
 
 
 

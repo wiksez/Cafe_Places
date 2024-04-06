@@ -9,7 +9,7 @@
         <h2>{{ dessert.name }}</h2>
         <p>{{ dessert.description }}</p>
         <p>{{ dessert.composition }}</p>
-        <a class="edit_link" href="">Edytować</a>
+        <a class="edit_link" href="{% url 'update_dessert' dessert.id %}">Edytować</a>
         <a class="delete_link" href="">Usunąć</a>
     {% endfor %}
     <p><a class="add_link" href="{% url 'add_dessert' %}">Dodaj deser</a></p>
