@@ -14,7 +14,7 @@
                 Type: cold
             {% endif %}</li>
         <a class="edit_link" href="{% url 'update_drink' drink.id %}">Edytować</a>
-        <a class="delete_link" href="">Usunąć</a>
+        <a class="delete_link" href="{% url 'delete_drink' drink.id %}">Usunąć</a>
     {% endfor %}
 </ul>
 <p><a class="add_link" href="{% url 'add_drink' %}">Dodaj drink</a></p>

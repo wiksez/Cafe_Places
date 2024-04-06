@@ -238,6 +238,13 @@ class UpdateDesserts(View):
         return render(request, 'update_dessert.html', {'form': form})
 
 
+class DeleteDrink(View):
+    def get(self, request, id):
+        drink = Drinks.objects.get(pk=id)
+        drink.delete()
+        return redirect('list_of_drinks')
+
+
 
 
 
