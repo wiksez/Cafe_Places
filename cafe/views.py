@@ -208,4 +208,21 @@ class AdminSettings(View):
         return render(request, 'admin_profile.html')
 
 
+class UpdateDrinks(View):
+    def get(self, request, id):
+        drink = Drinks.objects.get(pk=id)
+        form = DrinksForm(instance=drink)
+        return render(request, 'update_drink.html', {'form': form})
+
+    def post(self, request, id):
+        drink = Drinks.objects.get(pk=id)
+        form = DrinksForm(request.POST, instance=drink)
+        if form.is_valid():
+            form.save()
+            return redirect('list_of_drinks')
+        return render(request, 'update_drink.html', {'form': form})
+
+
+
+
 

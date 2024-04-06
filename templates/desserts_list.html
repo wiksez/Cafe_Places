@@ -1,5 +1,10 @@
 {% extends 'main.html' %}
 {% block content %}
+    <div>
+        <a href="{% url 'list_of_drinks' %}">Napoje</a>
+        <a href="{% url 'list_of_desserts' %}">Desery</a>
+        <a href="{% url 'shops_list' %}">Kawiarni</a>
+    </div>
     {% for dessert in desserts %}
         <h2>{{ dessert.name }}</h2>
         <p>{{ dessert.description }}</p>

@@ -1,5 +1,10 @@
 {% extends 'main.html' %}
 {% block content %}
+    <div>
+        <a href="{% url 'list_of_drinks' %}">Napoje</a>
+        <a href="{% url 'list_of_desserts' %}">Desery</a>
+        <a href="{% url 'shops_list' %}">Kawiarni</a>
+    </div>
 <ul>
     {% for drink in drinks %}
         <li>{{ drink.name }}
@@ -8,7 +13,7 @@
             {% else %}
                 Type: cold
             {% endif %}</li>
-        <a class="edit_link" href="">Edytować</a>
+        <a class="edit_link" href="{% url 'update_drink' drink.id %}">Edytować</a>
         <a class="delete_link" href="">Usunąć</a>
     {% endfor %}
 </ul>
