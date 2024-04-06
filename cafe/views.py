@@ -96,7 +96,10 @@ class Registration(View):
 class CoffeeShopList(View):
     def get(self, request):
         cofeshops = CoffeeShop.objects.all()
-        return render(request, 'coffeeshops.html', {'shops': cofeshops})
+        if request.user.username == 'Homer_Simpson':
+            return render(request, 'coffeeshops.html', {'shops': cofeshops, 'user_is_admin': True})
+        else:
+            return render(request, 'coffeeshops.html', {'shops': cofeshops, 'user_is_admin': False})
 
 
 class LoginView(View):

@@ -20,6 +20,14 @@ div.content {
     margin-right: 10%;
     height: 80%;
 }
+.profil {
+    color: #3C3C48;
+    font-size: 1.2em;
+    margin-top: 5px;
+}
+a.profil:hover {
+    color: #4CCD99;
+}
 .add_link {
     color: #4CCD99;
 }
@@ -29,6 +37,7 @@ div.content {
 .delete_link {
     color: red;
 }
+
 a {
     color: chocolate;
     padding: 9px;

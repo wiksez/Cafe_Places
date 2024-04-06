@@ -27,16 +27,17 @@
                 <a class="reg" href="{% url 'registration' %}">Zarejestruj się</a>
                 <a class="reg" href="{% url 'logout' %}">Wyloguj</a>
             </div>
-                <div><a href="{% url 'my_profile' %}">Twój profil {{ user }}</a></div>
+                <div>
+                <a class="profil" href="{% url 'my_profile' %}">Twój profil: {{ user }}</a>
+                {% if user_is_admin %}
+                    <a class="profil" href="{% url 'admin_profile' %}">Profil admina</a>
+                {% endif %}
             {% endif %}
-        </div>
+                </div>
+            </div>
 
     </div>
-    <div>
-        {% if user_is_admin %}
-            <a href="{% url 'admin_profile' %}">Profil admina</a>
-        {% endif %}
-    </div>
+
     <div class="content">
         {% block content %}
         {% endblock %}

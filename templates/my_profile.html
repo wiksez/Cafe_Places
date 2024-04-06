@@ -1,4 +1,7 @@
+{% extends 'main.html' %}
+{% block content %}
 <h1>my Cafes</h1>
 {% for cafe in my_cafes %}
     <h5>{{ cafe.favourite_cafes.name }}</h5>
 {% endfor %}
+{% endblock %}
