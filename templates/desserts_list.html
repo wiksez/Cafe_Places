@@ -10,7 +10,7 @@
         <p>{{ dessert.description }}</p>
         <p>{{ dessert.composition }}</p>
         <a class="edit_link" href="{% url 'update_dessert' dessert.id %}">Edytować</a>
-        <a class="delete_link" href="">Usunąć</a>
+        <a class="delete_link" href="{% url 'delete_dessert' dessert.id %}">Usunąć</a>
     {% endfor %}
     <p><a class="add_link" href="{% url 'add_dessert' %}">Dodaj deser</a></p>
 {% endblock %}

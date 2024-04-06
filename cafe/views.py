@@ -245,6 +245,12 @@ class DeleteDrink(View):
         return redirect('list_of_drinks')
 
 
+class DeleteDessert(View):
+    def get(self, request, id):
+        dessert = Desserts.objects.get(pk=id)
+        dessert.delete()
+        return redirect('list_of_desserts')
+
 
 
 

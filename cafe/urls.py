@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin_profile/', views.AdminSettings.as_view(), name='admin_profile'),
     path('update_drink/<int:id>/', views.UpdateDrinks.as_view(), name='update_drink'),
     path('update_dessert/<int:id>/', views.UpdateDesserts.as_view(), name='update_dessert'),
-    path('delete_drink/<int:id>/', views.DeleteDrink.as_view(), name='delete_drink')
+    path('delete_drink/<int:id>/', views.DeleteDrink.as_view(), name='delete_drink'),
+    path('delete_desserts/<int:id>/', views.DeleteDessert.as_view(), name='delete_dessert')
 ]
