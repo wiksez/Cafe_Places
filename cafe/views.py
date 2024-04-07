@@ -6,7 +6,7 @@ from django.views import View
 from django.contrib.auth import authenticate, login, logout
 
 
-from cafe.forms import DrinksForm, DessertsForm, RegistrationForm, LoginForm, CommentsForm
+from cafe.forms import DrinksForm, DessertsForm, RegistrationForm, LoginForm, CommentsForm, CoffeShopForm
 from cafe.models import Drinks, Desserts, CoffeeShop, Feedback, Favorite
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -254,6 +254,17 @@ class DeleteDessert(View):
         dessert.delete()
         return redirect('list_of_desserts')
 
+
+class AddCoffeShop(View):
+    def get(self, request):
+        form = CoffeShopForm()
+        return render(request, 'add_coffeshop.html', {'form': form})
+    def post(self, request):
+        form = CoffeShopForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('shops_list')
+        return render(request, 'add_coffeshop.html', {'form': form})
 
 
 

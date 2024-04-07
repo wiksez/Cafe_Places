@@ -1,5 +1,5 @@
 from django import forms
-from cafe.models import Drinks, Desserts, Feedback
+from cafe.models import Drinks, Desserts, Feedback, CoffeeShop
 from django.contrib.auth.models import User
 
 
@@ -38,3 +38,17 @@ class CommentsForm(forms.Form):
     class Meta:
         model = Feedback
         fields = ['text', 'rating']
+
+
+class CoffeShopForm(forms.ModelForm):
+    drinks = forms.ModelMultipleChoiceField(
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+        queryset=Drinks.objects.all())
+    desserts = forms.ModelMultipleChoiceField(
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+        queryset=Desserts.objects.all())
+    class Meta:
+        model = CoffeeShop
+        fields = '__all__'
