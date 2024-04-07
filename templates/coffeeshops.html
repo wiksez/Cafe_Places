@@ -5,7 +5,7 @@
         <a href="{% url 'shop_details' shop.id %}"><h3>{{ shop.name }}</h3></a>
         <p class="description">{{ shop.description }} <br>
         {% if user_is_admin %}
-            <a class="edit_link" href="">Edytować</a>
+            <a class="edit_link" href="{% url 'update_cafe' shop.id %}">Edytować</a>
             <a class="delete_link" href="">Usunąć</a>
         {% endif %}
         </p>

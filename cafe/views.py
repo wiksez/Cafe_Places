@@ -5,7 +5,6 @@ from django.urls import reverse
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
 
-
 from cafe.forms import DrinksForm, DessertsForm, RegistrationForm, LoginForm, CommentsForm, CoffeShopForm
 from cafe.models import Drinks, Desserts, CoffeeShop, Feedback, Favorite
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -147,7 +146,8 @@ class CoffeShopDetails(View):
         desserts = shop.desserts.all()
         comments = Feedback.objects.filter(coffees=shop)
         form = CommentsForm()
-        return render(request, 'coffe_shop_details.html', {'shop': shop, 'drinks': drinks, 'desserts': desserts, 'comments': comments, 'form': form})
+        return render(request, 'coffe_shop_details.html',
+                      {'shop': shop, 'drinks': drinks, 'desserts': desserts, 'comments': comments, 'form': form})
 
 
 class FeedbacksList(View):
@@ -259,6 +259,7 @@ class AddCoffeShop(View):
     def get(self, request):
         form = CoffeShopForm()
         return render(request, 'add_coffeshop.html', {'form': form})
+
     def post(self, request):
         form = CoffeShopForm(request.POST)
         if form.is_valid():
@@ -267,4 +268,16 @@ class AddCoffeShop(View):
         return render(request, 'add_coffeshop.html', {'form': form})
 
 
+class UpdateCoffeShop(View):
+    def get(self, request, id):
+        cafe = CoffeeShop.objects.get(pk=id)
+        form = CoffeShopForm(instance=cafe)
+        return render(request, 'update_cafe.html', {'form': form})
 
+    def post(self, request, id):
+        cafe = CoffeeShop.objects.get(pk=id)
+        form = CoffeShopForm(request.POST, instance=cafe)
+        if form.is_valid():
+            form.save()
+            return redirect('shops_list')
+        return render(request, 'update_cafe.html', {'form': form})
