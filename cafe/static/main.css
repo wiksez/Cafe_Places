@@ -4,15 +4,57 @@ body {
     font-family: Montserrat, sans-serif;
 }
 
+.registration {
+    display: inline-flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 20px;
+    padding: 0;
+    float: right;
+    background-color: #ffdc78;
+    border-radius: 10px;
+}
+.reg {
+    font-size: 18px;
+    color: #3E3232;
+}
+a.reg:hover {
+    color: #4CCD99;
+}
 div.header {
-    background-color: #F5E8C7;
-    color: #864AF9;
+    background-image: url("img/wroclaw_main.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #FFFDD0;
     margin-left: 10%;
     margin-right: 10%;
-    margin-bottom: 8px;
-    font-size: 16px;
-    height: 20%;
-    padding-bottom: 15px;
+    height: 120px;
+}
+div.navigation {
+    margin-left: 10%;
+    margin-right: 10%;
+    background-color: #3C3C48;
+}
+.main-content {
+    display: flex;
+    align-items: center;
+}
+img {
+    width: 500px;
+}
+.main-image {
+    width:500px;
+    padding: 5px;
+    margin-right: 20px;
+}
+.main-text {
+    flex-grow: 1;
+    font-size: 0.9em;
+}
+.main-text-p {
+    font-size: 1.3em;
+    padding: 0 20px;
 }
 div.content {
     background-color: lightcyan;
@@ -21,8 +63,8 @@ div.content {
     height: 80%;
 }
 .profil {
-    color: #3C3C48;
-    font-size: 1.2em;
+    color: #4CCD99;
+    font-size: 1.5em;
     margin-top: 5px;
 }
 a.profil:hover {
@@ -41,21 +83,16 @@ a.profil:hover {
 a {
     color: chocolate;
     padding: 9px;
-    font-size: 2em;
+    font-size: 1.5em;
     text-decoration: none;
 }
-.registration {
-    display: inline-block;
-    margin-right: 20px;
-    float: right;
-    background-color: #ffdc78;
-}
+
 a:hover {
-    color: #3E3232;
+    color: #FFFDD0;
 }
 h1 {
     margin: 0;
-    padding: 0;
+    padding-top: 15px;
     font-size: 3em;
     text-align: center;
 }

@@ -10,5 +10,7 @@
         {% endif %}
         </p>
     {% endfor %}
-    <p><a href="{% url 'add_coffeehouse' %}">Dodaj kawiarnie</a></p>
+    {% if user_is_admin %}
+        <p><a href="{% url 'add_coffeehouse' %}">Dodaj kawiarnie</a></p>
+    {% endif %}
 {% endblock %}
