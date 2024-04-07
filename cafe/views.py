@@ -288,3 +288,27 @@ class DeleteCafe(View):
         cafe = CoffeeShop.objects.get(pk=id)
         cafe.delete()
         return redirect('shops_list')
+
+
+class SearchCafe(View):
+    def get(self, request):
+        return render(request, 'search.html')
+
+    def post(self, request):
+        cafe = CoffeeShop.objects.all()
+        selected_districts = []
+        if 'stare_miasto' in request.POST:
+            selected_districts.append('Stare Miasto')
+        if 'srodmiescie' in request.POST:
+            selected_districts.append('Śródmieście')
+        if 'krzyki' in request.POST:
+            selected_districts.append('Krzyki')
+        if 'fabryczna' in request.POST:
+            selected_districts.append('Fabryczna')
+        if 'psie_pole' in request.POST:
+            selected_districts.append('Psie Pole')
+        if len(selected_districts) == 0:
+            cafes = CoffeeShop.objects.all()
+        else:
+            cafes = CoffeeShop.objects.filter(district__in=selected_districts)
+        return render(request, 'search.html', {'cafes': cafes})

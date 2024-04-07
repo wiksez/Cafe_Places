@@ -27,7 +27,7 @@
     <div class="navigation">
         <a href="{% url 'home' %}">Główna</a>
         <a href="{% url 'shops_list' %}">Kawiarni</a>
-        <a href="">Szukaj</a>
+        <a href="{% url 'search' %}">Szukaj</a>
         <a href="">Kontakty</a>
         {% if user.is_authenticated %}
             <a class="profil" href="{% url 'my_profile' %}">Twój profil: {{ user }}</a>

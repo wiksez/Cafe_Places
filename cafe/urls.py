@@ -27,5 +27,6 @@ urlpatterns = [
     path('delete_desserts/<int:id>/', views.DeleteDessert.as_view(), name='delete_dessert'),
     path('add_coffeshop/', views.AddCoffeShop.as_view(), name='add_coffeehouse'),
     path('update_cafe/<int:id>/', views.UpdateCoffeShop.as_view(), name='update_cafe'),
-    path('delete_cafe/<int:id>/', views.DeleteCafe.as_view(), name='delete_cafe')
+    path('delete_cafe/<int:id>/', views.DeleteCafe.as_view(), name='delete_cafe'),
+    path('serach/', views.SearchCafe.as_view(), name='search')
 ]

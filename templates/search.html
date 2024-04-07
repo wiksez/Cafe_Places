@@ -1,0 +1,30 @@
+{% extends 'main.html' %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <label for="stare_miast">
+            <input type="checkbox" id="stare_miast" name="stare_miasto" value="Stare Miasto">
+            Stare Miasto
+        </label><br>
+        <label for="srodmiescie">
+            <input type="checkbox" id="srodmiescie" name="srodmiescie" value="Śródmieście">
+            Śródmieście
+        </label><br>
+        <label for="krzyki">
+            <input type="checkbox" id="krzyki" name="krzyki" value="krzyki">
+            Krzyki
+        </label><br>
+         <label for="fabryczna">
+            <input type="checkbox" id="fabryczna" name="fabryczna" value="fabryczna">
+            Fabryczna
+        </label><br>
+         <label for="psie_pole">
+            <input type="checkbox" id="psie_pole" name="psie_pole" value="psie_pole">
+            Psie Pole
+        </label><br>
+        <input type="submit" value="Submit">
+    </form>
+    {% for cafe in cafes %}
+        <li><a href="{% url 'shop_details' cafe.id %}">{{ cafe.name }}</a></li>
+    {% endfor %}
+{% endblock %}
