@@ -18,6 +18,9 @@ body {
     font-size: 18px;
     color: #3E3232;
 }
+a.search-drink:hover {
+    color: #3E3232;
+}
 a.reg:hover {
     color: #4CCD99;
 }
@@ -122,4 +125,8 @@ p.description {
     margin: 0 15%;
     padding: 2% 5%;
     background-color: #FFFDD0;
+}
+p.message {
+    font-size: 2em;
+    color: red;
 }

@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit">
+    </form>
+{% for cafe in cafes %}
+    <li>{{ cafe.name }}</li>
+{% endfor %}
+    <p class='message'>{{ message }}</p>
+{% endblock %}

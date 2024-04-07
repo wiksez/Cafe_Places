@@ -49,6 +49,12 @@ class CoffeShopForm(forms.ModelForm):
         required=False,
         widget=forms.CheckboxSelectMultiple,
         queryset=Desserts.objects.all())
+
     class Meta:
         model = CoffeeShop
         fields = '__all__'
+
+
+class SearchCoffeeForm(forms.Form):
+    drink = forms.CharField(label="Napój")
+

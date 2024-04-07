@@ -1,5 +1,7 @@
 {% extends 'main.html' %}
 {% block content %}
+    <h2>Wybierz dzielnicę, w której chcesz odwiedzić kawiarnię.</h2>
+    <div><a class="search-drink" href="{% url 'search_drink' %}">Szukasz swojego napoju?</a></div>
     <form method="post">
         {% csrf_token %}
         <label for="stare_miast">

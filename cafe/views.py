@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
 
-from cafe.forms import DrinksForm, DessertsForm, RegistrationForm, LoginForm, CommentsForm, CoffeShopForm
+from cafe.forms import DrinksForm, DessertsForm, RegistrationForm, LoginForm, CommentsForm, CoffeShopForm, SearchCoffeeForm
 from cafe.models import Drinks, Desserts, CoffeeShop, Feedback, Favorite
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -312,3 +312,21 @@ class SearchCafe(View):
         else:
             cafes = CoffeeShop.objects.filter(district__in=selected_districts)
         return render(request, 'search.html', {'cafes': cafes})
+
+
+class SearchDrink(View):
+    def get(self, request):
+        form = SearchCoffeeForm()
+        return render(request, 'search_drink.html', {'form': form})
+
+    def post(self, request):
+        cafe = CoffeeShop.objects.all()
+        form = SearchCoffeeForm(request.POST)
+        if form.is_valid():
+            drink = form.cleaned_data.get('drink')
+            cafe_with_drink = cafe.filter(drinks__name=drink)
+            if cafe_with_drink.exists():
+                return render(request, 'search_drink.html', {'form': form, 'cafes': cafe_with_drink})
+            else:
+                message = f"Nie ma na naszej stronie kawiarni z napojem '{drink}'."
+                return render(request, 'search_drink.html', {'form': form, 'message': message})
