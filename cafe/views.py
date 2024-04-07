@@ -281,3 +281,10 @@ class UpdateCoffeShop(View):
             form.save()
             return redirect('shops_list')
         return render(request, 'update_cafe.html', {'form': form})
+
+
+class DeleteCafe(View):
+    def get(self, request, id):
+        cafe = CoffeeShop.objects.get(pk=id)
+        cafe.delete()
+        return redirect('shops_list')
