@@ -5,3 +5,4 @@ db.sqlite3
 settings.py
 users.txt
 pytest.ini
+.pytest_cache

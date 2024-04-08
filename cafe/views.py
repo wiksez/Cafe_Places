@@ -48,6 +48,7 @@ class AddDrinks(View):
         if form.is_valid():
             form.save()
             return redirect('home')
+        return render(request, 'add_drink.html', {'form': form})
 
 
 class DrinksList(View):
