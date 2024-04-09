@@ -67,6 +67,7 @@ class AddDessert(View):
         if form.is_valid():
             form.save()
             return redirect('home')
+        return render(request, 'add_dessert.html', {'form': form})
 
 
 class DessertsList(View):
