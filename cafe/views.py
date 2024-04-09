@@ -173,12 +173,18 @@ class AddComments(LoginRequiredMixin, View):
     def post(self, request, id):
         form = CommentsForm(request.POST)
         shop = CoffeeShop.objects.get(pk=id)
+        sum_of_grades = 0
         try:
             if form.is_valid():
                 comment = form.cleaned_data['comments']
                 rating = form.cleaned_data['ranking']
                 new_feedback = Feedback.objects.create(user=request.user, text=comment, coffees=shop, rating=rating)
                 new_feedback.save()
+                grades = Feedback.objects.filter(coffees=shop).values_list('rating', flat=True)
+                for grade in grades:
+                    sum_of_grades += int(grade)
+                shop.ranking = sum_of_grades / len(grades)
+                shop.save()
                 return redirect('home')
         except IntegrityError:
             message = "Już masz opinię o tej kawiarni "
