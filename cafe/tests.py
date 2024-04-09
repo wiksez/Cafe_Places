@@ -43,3 +43,11 @@ def test_add_drink_post():
     assert response.url.startswith(reverse('home'))
     assert Drinks.objects.get(name='Coca-Cola', type_is_hot=False)
 
+
+@pytest.mark.django_db
+def test_add_type_get(drinks):
+    client = Client()
+    url = reverse('list_of_drinks')
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.context['drinks'].count() == len(drinks)

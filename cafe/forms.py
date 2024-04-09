@@ -33,7 +33,7 @@ class LoginForm(forms.Form):
 
 class CommentsForm(forms.Form):
     comments = forms.CharField(widget=forms.Textarea)
-    ranking = forms.IntegerField()
+    ranking = forms.ChoiceField(choices=[(i, str(i)) for i in range(1, 6)], widget=forms.RadioSelect)
 
     class Meta:
         model = Feedback
