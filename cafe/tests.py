@@ -120,3 +120,69 @@ def test_registration_view():
     expected_fields = ['username', 'email', 'password1', 'password2']
     for field_name in expected_fields:
         assert field_name in form.fields
+
+
+@pytest.mark.django_db
+def test_registration_post():
+    client = Client()
+    url = reverse('registration')
+    data = {
+        'username': 'Nick',
+        'email': 'nick@mail.com',
+        'password1': 'qwerty123',
+        'password2': 'qwerty123'
+    }
+    response = client.post(url, data)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('home'))
+    assert User.objects.count() == 1
+    assert User.objects.filter(username='Nick', email='nick@mail.com').exists()
+
+
+@pytest.mark.django_db
+def test_registration_post_wrong_password():
+    client = Client()
+    url = reverse('registration')
+    data = {
+        'username': 'Nick',
+        'email': 'nick@mail.com',
+        'password1': 'qwerty123',
+        'password2': '321'
+    }
+    response = client.post(url, data)
+    assert response.status_code == 200
+    assert User.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_registration_post_empty():
+    client = Client()
+    url = reverse('registration')
+    data = {
+        'username': '',
+    }
+    response = client.post(url, data)
+    assert response.status_code == 200
+    assert User.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_coffeehouses_list_get(coffeehouses):
+    client = Client()
+    url = reverse('shops_list')
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.context['shops'].count() == len(coffeehouses)
+
+
+@pytest.mark.django_db
+def test_coffeehouses_list_for_admin():
+    user = User.objects.create_user(username='Homer_Simpson')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    url = reverse('shops_list')
+    client.login(username='Homer_Simpson', password='password123')
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.context['user_is_admin'] == True
