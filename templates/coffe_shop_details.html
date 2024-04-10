@@ -4,24 +4,25 @@
     <div>
         <a href="{% url 'menu_drinks' shop.id %}">Napoje</a>
         <a href="{% url 'menu_desserts' shop.id %}">Desery</a>
-        <a href="{% url 'add_feedback' shop.id %}">Opinii</a>
-        <a href="{% url 'contacts' shop.id %}">Kontakty</a>
+        <a href="{% url 'contacts' shop.id %}">Informacja</a>
     </div>
     <div>
         <p class="description">{{ shop.description }}</p>
-        <a href="{% url 'add_favorite_cafe' shop.id %}">Dodać kawiarnię do ulubionych</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'add_favorite_cafe' shop.id %}">Dodać kawiarnię do ulubionych</a>
+        {% endif %}
     </div>
-    <div>
+    <div class="comments">
     <h4>Dodaj komentarz dla {{ shop.name }}</h4>
-    <form action="{% url 'add_feedback' shop.id %}" method="post">
+    <form class="comments-form" action="{% url 'add_feedback' shop.id %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit">
+        <input class="comments-button" type="submit" value="Wyślij">
     </form>
         <h4>Komentarze</h4>
         {% for comment in comments %}
-            <p><b>{{ comment.user }}</b>: <span>{{ comment.text }}</span></p>
-            <p>{{ comment.date }}</p>
+            <p><b class="comments-user">{{ comment.user }}</b> <span class="comments-text">{{ comment.text }}</span></p>
+            <p class="comment-date">{{ comment.date }}</p>
         {% endfor %}
     </div>
 {% endblock %}

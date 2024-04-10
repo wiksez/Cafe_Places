@@ -3,7 +3,42 @@ body {
     margin: 0;
     font-family: Montserrat, sans-serif;
 }
+div.comments {
+    background-color: #3C3C48;
+    padding-left: 30px;
+}
+.comments-form {
+    text-align: left;
+}
+.comments-text {
+    color: #FFFDD0;
+}
+p.comment-date {
+    text-align: right;
+    color: aqua;
+}
+.comments-user {
+    color: #4CCD99;
+    font-size: 1.2em;
+}
+.comments-form textarea {
+    width: 100%;
+    height: 60px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
 
+.comments-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 .registration {
     display: inline-flex;
     justify-content: flex-end;
