@@ -240,7 +240,8 @@ class MyFavoriteCafe(View):
         cafe = Favorite.objects.filter(user=request.user)
         drink = Favorite.objects.filter(user=request.user)
         dessert = Favorite.objects.filter(user=request.user)
-        return render(request, 'my_profile.html', {'my_cafe': cafe, 'my_drink': drink, 'my_dessert': dessert})
+        comments = Feedback.objects.filter(user=request.user)
+        return render(request, 'my_profile.html', {'my_cafe': cafe, 'my_drink': drink, 'my_dessert': dessert, 'my_comments': comments})
 
 
 class AdminSettings(View):

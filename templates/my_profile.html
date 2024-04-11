@@ -12,4 +12,8 @@
 {% for dessert in my_dessert %}
     <h4>{{ dessert.favourite_desserts.name }}</h4>
 {% endfor %}
+<h2>Moi komentarzę</h2>
+    {% for comment in my_comments %}
+        <p><span class="comment-cafe">{{ comment.coffees.name }}:</span> {{ comment.text }}</p>
+    {% endfor %}
 {% endblock %}
