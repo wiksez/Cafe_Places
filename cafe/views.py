@@ -220,11 +220,27 @@ class AddDrinkToMyFavorite(View):
             my_drink.save()
         return redirect('my_profile')
 
+
+class AddDessertToMyFavorite(View):
+    def get(self, request, id):
+        dessert = Desserts.objects.get(pk=id)
+        user = request.user
+        my_dessert, created = Favorite.objects.get_or_create(user=user)
+        if created:
+            my_dessert.favourite_desserts = dessert
+            my_dessert.save()
+        else:
+            my_dessert.favourite_desserts = dessert
+            my_dessert.save()
+        return redirect('my_profile')
+
+
 class MyFavoriteCafe(View):
     def get(self, request):
         cafe = Favorite.objects.filter(user=request.user)
         drink = Favorite.objects.filter(user=request.user)
-        return render(request, 'my_profile.html', {'my_cafe': cafe, 'my_drink': drink})
+        dessert = Favorite.objects.filter(user=request.user)
+        return render(request, 'my_profile.html', {'my_cafe': cafe, 'my_drink': drink, 'my_dessert': dessert})
 
 
 class AdminSettings(View):

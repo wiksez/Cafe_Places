@@ -8,4 +8,8 @@
 {% for drink in my_drink %}
     <h4>{{ drink.favourite_drinks.name }}</h4>
 {% endfor %}
+<h2>Mój ulubiony deser</h2>
+{% for dessert in my_dessert %}
+    <h4>{{ dessert.favourite_desserts.name }}</h4>
+{% endfor %}
 {% endblock %}
