@@ -34,3 +34,11 @@ def coffeehouses():
             end_of_work="18:00"
         ))
     return cafe
+
+
+@pytest.fixture
+def user():
+    user = User.objects.create(username='Cukier')
+    user.set_password('qwerty1')
+    user.save()
+    return user

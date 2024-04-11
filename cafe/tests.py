@@ -3,7 +3,7 @@ from django.http import request
 from django.test import TestCase, Client
 from django.urls import reverse
 import pytest
-from cafe.forms import RegistrationForm
+from cafe.forms import RegistrationForm, LoginForm
 from cafe.models import Drinks, Desserts, CoffeeShop, Feedback
 
 
@@ -186,3 +186,58 @@ def test_coffeehouses_list_for_admin():
     response = client.get(url)
     assert response.status_code == 200
     assert response.context['user_is_admin'] == True
+
+
+def test_login_get():
+    client = Client()
+    url = reverse('login')
+    response = client.get(url)
+    assert response.status_code == 200
+    form = response.context['form']
+    assert isinstance(form, LoginForm)
+    expected_fields = ['username', 'password']
+    for field_name in expected_fields:
+        assert field_name in form.fields
+
+
+@pytest.mark.django_db
+def test_login_post(user):
+    client = Client()
+    redirect_url = reverse('login')
+    data = {
+        'username': 'Cukier',
+        'password': 'qwerty1'
+    }
+    response = client.post(redirect_url, data)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('home'))
+
+    # def test_login_invalid_user(self):
+    #     login_data = {'username': 'invaliduser', 'password': 'invalidpassword'}
+    #     response = self.client.post(self.login_url, login_data)
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertTemplateUsed(response, 'registration.html')
+    #     self.assertContains(response, 'Invalid username or password')
+
+
+@pytest.mark.django_db
+def test_login_post_wrong(user):
+    client = Client()
+    redirect_url = reverse('login')
+    data = {
+        'username': 'Cukier',
+        'password': '123'
+    }
+    response = client.post(redirect_url, data)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_logout(user):
+    client = Client()
+    url = reverse('logout')
+    client.login(username='Cukier', password='qwerty1')
+    response = client.get(url)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('home'))
+
