@@ -19,6 +19,7 @@ urlpatterns = [
     path('contacts/<int:id>/', views.Contacts.as_view(), name='contacts'),
     path('add_comments/<int:id>/', views.AddComments.as_view(), name='add_feedback'),
     path('add_favorite_cafe/<int:id>/', views.AddCafeToMyFavorite.as_view(), name='add_favorite_cafe'),
+    path('add_favorite_drink/<int:id>/', views.AddDrinkToMyFavorite.as_view(), name='add_favorite_drink'),
     path('my_profile/', views.MyFavoriteCafe.as_view(), name='my_profile'),
     path('admin_profile/', views.AdminSettings.as_view(), name='admin_profile'),
     path('update_drink/<int:id>/', views.UpdateDrinks.as_view(), name='update_drink'),

@@ -204,14 +204,27 @@ class AddCafeToMyFavorite(View):
         else:
             my_cafe.favourite_cafes = cafe
             my_cafe.save()
-        messages.add_message(request, messages.INFO, f"udalo sie dodać kawiarnie {cafe.name} do ulubionych")
         return redirect('shops_list')
 
 
+class AddDrinkToMyFavorite(View):
+    def get(self, request, id):
+        drink = Drinks.objects.get(pk=id)
+        user = request.user
+        my_drink, created = Favorite.objects.get_or_create(user=user)
+        if created:
+            my_drink.favourite_drinks = drink
+            my_drink.save()
+        else:
+            my_drink.favourite_drinks = drink
+            my_drink.save()
+        return redirect('my_profile')
+
 class MyFavoriteCafe(View):
     def get(self, request):
-        cafes = Favorite.objects.filter(user=request.user)
-        return render(request, 'my_profile.html', {'my_cafes': cafes})
+        cafe = Favorite.objects.filter(user=request.user)
+        drink = Favorite.objects.filter(user=request.user)
+        return render(request, 'my_profile.html', {'my_cafe': cafe, 'my_drink': drink})
 
 
 class AdminSettings(View):

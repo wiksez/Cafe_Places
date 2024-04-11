@@ -1,7 +1,11 @@
 {% extends 'main.html' %}
 {% block content %}
-<h1>my Cafes</h1>
-{% for cafe in my_cafes %}
-    <h5>{{ cafe.favourite_cafes.name }}</h5>
+<h2>Moja ulubiona kawiarnia</h2>
+{% for cafe in my_cafe %}
+    <h4>{{ cafe.favourite_cafes.name }}</h4>
+{% endfor %}
+<h2>Mój ulubiony napój</h2>
+{% for drink in my_drink %}
+    <h4>{{ drink.favourite_drinks.name }}</h4>
 {% endfor %}
 {% endblock %}

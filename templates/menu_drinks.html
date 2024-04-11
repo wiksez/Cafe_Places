@@ -17,7 +17,7 @@
             </tr>
             {% for drink in drinks %}
                 <tr>
-                    <td>{{ drink.name }}</td>
+                    <td><a href="{% url 'add_favorite_drink' drink.id %}">{{ drink.name }}</a></td>
                     <td>{{ drink.price }}</td>
                     {% if drink.type_is_hot %}
                     <td>Gorący napój</td>
