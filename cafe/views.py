@@ -37,7 +37,7 @@ def index(request):
         return render(request, 'main.html', {'user_is_admin': False})
 
 
-class AddDrinks(View):
+class AddDrinks(LoginRequiredMixin, View):
 
     def get(self, request):
         form = DrinksForm()
@@ -51,13 +51,13 @@ class AddDrinks(View):
         return render(request, 'add_drink.html', {'form': form})
 
 
-class DrinksList(View):
+class DrinksList(LoginRequiredMixin, View):
     def get(self, request):
         drinks = Drinks.objects.all()
         return render(request, 'drinks_list.html', {'drinks': drinks})
 
 
-class AddDessert(View):
+class AddDessert(LoginRequiredMixin, View):
     def get(self, request):
         form = DessertsForm()
         return render(request, 'add_dessert.html', {'form': form})
@@ -70,7 +70,7 @@ class AddDessert(View):
         return render(request, 'add_dessert.html', {'form': form})
 
 
-class DessertsList(View):
+class DessertsList(LoginRequiredMixin, View):
     def get(self, request):
         desserts = Desserts.objects.all()
         return render(request, 'desserts_list.html', {'desserts': desserts})
@@ -193,7 +193,7 @@ class AddComments(LoginRequiredMixin, View):
         return render(request, 'add_comment.html', {'shop': shop, 'form': form})
 
 
-class AddCafeToMyFavorite(View):
+class AddCafeToMyFavorite(LoginRequiredMixin, View):
     def get(self, request, id):
         cafe = CoffeeShop.objects.get(pk=id)
         user = request.user
@@ -207,7 +207,7 @@ class AddCafeToMyFavorite(View):
         return redirect('shops_list')
 
 
-class AddDrinkToMyFavorite(View):
+class AddDrinkToMyFavorite(LoginRequiredMixin, View):
     def get(self, request, id):
         drink = Drinks.objects.get(pk=id)
         user = request.user
@@ -221,7 +221,7 @@ class AddDrinkToMyFavorite(View):
         return redirect('my_profile')
 
 
-class AddDessertToMyFavorite(View):
+class AddDessertToMyFavorite(LoginRequiredMixin, View):
     def get(self, request, id):
         dessert = Desserts.objects.get(pk=id)
         user = request.user
@@ -235,7 +235,7 @@ class AddDessertToMyFavorite(View):
         return redirect('my_profile')
 
 
-class MyFavoriteCafe(View):
+class MyProfile(LoginRequiredMixin, View):
     def get(self, request):
         cafe = Favorite.objects.filter(user=request.user)
         drink = Favorite.objects.filter(user=request.user)
@@ -244,12 +244,12 @@ class MyFavoriteCafe(View):
         return render(request, 'my_profile.html', {'my_cafe': cafe, 'my_drink': drink, 'my_dessert': dessert, 'my_comments': comments})
 
 
-class AdminSettings(View):
+class AdminSettings(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'admin_profile.html')
 
 
-class UpdateDrinks(View):
+class UpdateDrinks(LoginRequiredMixin, View):
     def get(self, request, id):
         drink = Drinks.objects.get(pk=id)
         form = DrinksForm(instance=drink)
@@ -264,7 +264,7 @@ class UpdateDrinks(View):
         return render(request, 'update_drink.html', {'form': form})
 
 
-class UpdateDesserts(View):
+class UpdateDesserts(LoginRequiredMixin, View):
     def get(self, request, id):
         dessert = Desserts.objects.get(pk=id)
         form = DessertsForm(instance=dessert)
@@ -279,21 +279,21 @@ class UpdateDesserts(View):
         return render(request, 'update_dessert.html', {'form': form})
 
 
-class DeleteDrink(View):
+class DeleteDrink(LoginRequiredMixin, View):
     def get(self, request, id):
         drink = Drinks.objects.get(pk=id)
         drink.delete()
         return redirect('list_of_drinks')
 
 
-class DeleteDessert(View):
+class DeleteDessert(LoginRequiredMixin, View):
     def get(self, request, id):
         dessert = Desserts.objects.get(pk=id)
         dessert.delete()
         return redirect('list_of_desserts')
 
 
-class AddCoffeShop(View):
+class AddCoffeShop(LoginRequiredMixin, View):
     def get(self, request):
         form = CoffeShopForm()
         return render(request, 'add_coffeshop.html', {'form': form})
@@ -306,7 +306,7 @@ class AddCoffeShop(View):
         return render(request, 'add_coffeshop.html', {'form': form})
 
 
-class UpdateCoffeShop(View):
+class UpdateCoffeShop(LoginRequiredMixin, View):
     def get(self, request, id):
         cafe = CoffeeShop.objects.get(pk=id)
         form = CoffeShopForm(instance=cafe)
@@ -321,7 +321,7 @@ class UpdateCoffeShop(View):
         return render(request, 'update_cafe.html', {'form': form})
 
 
-class DeleteCafe(View):
+class DeleteCafe(LoginRequiredMixin, View):
     def get(self, request, id):
         cafe = CoffeeShop.objects.get(pk=id)
         cafe.delete()
