@@ -1,10 +1,10 @@
 {% extends 'main.html' %}
 {% block content %}
     <h2>Dodaj komentarz dla {{ shop.name }}</h2>
-    {{ message }}
-    <form method="post">
+    <p class="message">{{ message }}</p>
+    <form class="comments-form" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit">
+        <input class="comments-button" type="submit" value="Wyślij">
     </form>
 {% endblock %}

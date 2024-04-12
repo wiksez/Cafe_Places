@@ -32,8 +32,8 @@ class LoginForm(forms.Form):
 
 
 class CommentsForm(forms.Form):
-    comments = forms.CharField(widget=forms.Textarea)
-    ranking = forms.ChoiceField(choices=[(i, str(i)) for i in range(1, 6)], widget=forms.RadioSelect)
+    comments = forms.CharField(label='Napisz komentarz',widget=forms.Textarea)
+    ranking = forms.ChoiceField(label='Twoja ocena', choices=[(i, str(i)) for i in range(1, 6)], widget=forms.RadioSelect)
 
     class Meta:
         model = Feedback
