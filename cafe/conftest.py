@@ -30,7 +30,7 @@ def coffeehouses():
             adres="Legnicka",
             phone_number="123456789",
             district="Fabryczna",
-            start_of_work="09:00",  # Пример значения для поля start_of_work
+            start_of_work="09:00",
             end_of_work="18:00"
         ))
     return cafe
@@ -42,3 +42,23 @@ def user():
     user.set_password('qwerty1')
     user.save()
     return user
+
+
+@pytest.fixture
+def cafe():
+    cafe = CoffeeShop.objects.create(
+            name='name',
+            description="abc",
+            adres="Legnicka",
+            phone_number="123456789",
+            district="Fabryczna",
+            start_of_work="09:00",
+            end_of_work="18:00"
+        )
+    return cafe
+
+
+@pytest.fixture
+def feedback(user, cafe):
+    feedback = Feedback.objects.create(user=user, text="good", coffees=cafe, rating=4)
+    return feedback

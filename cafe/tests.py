@@ -3,7 +3,7 @@ from django.http import request
 from django.test import TestCase, Client
 from django.urls import reverse
 import pytest
-from cafe.forms import RegistrationForm, LoginForm
+from cafe.forms import RegistrationForm, LoginForm, CommentsForm
 from cafe.models import Drinks, Desserts, CoffeeShop, Feedback
 
 
@@ -212,13 +212,6 @@ def test_login_post(user):
     assert response.status_code == 302
     assert response.url.startswith(reverse('home'))
 
-    # def test_login_invalid_user(self):
-    #     login_data = {'username': 'invaliduser', 'password': 'invalidpassword'}
-    #     response = self.client.post(self.login_url, login_data)
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertTemplateUsed(response, 'registration.html')
-    #     self.assertContains(response, 'Invalid username or password')
-
 
 @pytest.mark.django_db
 def test_login_post_wrong(user):
@@ -241,3 +234,44 @@ def test_logout(user):
     assert response.status_code == 302
     assert response.url.startswith(reverse('home'))
 
+
+@pytest.mark.django_db
+def test_menu_drinks(drinks):
+    client = Client()
+    cafe = CoffeeShop.objects.create(name="Some_cafe", description="abc", adres="Legnicka", phone_number="123456789",
+                                     district="Fabryczna", start_of_work="09:00", end_of_work="18:00")
+    cafe.drinks.add(*drinks)
+    url = reverse('menu_drinks', kwargs={'id': cafe.pk})
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.context['shop'] == cafe
+    assert response.context['drinks'].count() == len(drinks)
+
+
+@pytest.mark.django_db
+def test_menu_desserts(desserts):
+    client = Client()
+    cafe = CoffeeShop.objects.create(name="Some_cafe", description="abc", adres="Legnicka", phone_number="123456789",
+                                     district="Fabryczna", start_of_work="09:00", end_of_work="18:00")
+    cafe.desserts.add(*desserts)
+    url = reverse('menu_desserts', kwargs={'id': cafe.pk})
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.context['shop'] == cafe
+    assert response.context['desserts'].count() == len(desserts)
+
+
+@pytest.mark.django_db
+def test_cafe_details(drinks, desserts, cafe, feedback):
+    client = Client()
+    cafe = cafe
+    cafe.desserts.add(*desserts)
+    cafe.drinks.add(*drinks)
+    comment = feedback
+    url = reverse('shop_details', kwargs={'id': cafe.pk})
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.context['shop'] == cafe
+    assert response.context['desserts'].count() == len(desserts)
+    assert response.context['drinks'].count() == len(drinks)
+    assert comment.text in [item.text for item in response.context['comments']]
