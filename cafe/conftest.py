@@ -62,3 +62,14 @@ def cafe():
 def feedback(user, cafe):
     feedback = Feedback.objects.create(user=user, text="good", coffees=cafe, rating=4)
     return feedback
+
+
+@pytest.fixture
+def feedbacks(cafe):
+    comments = []
+    for x in range(5):
+        user = User.objects.create(username=x)
+        user.set_password(f'qwerty{x}')
+        user.save()
+        comments.append(Feedback.objects.create(user=user, text=x, coffees=cafe, rating=x))
+    return comments

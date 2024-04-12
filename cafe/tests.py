@@ -4,7 +4,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 import pytest
 from cafe.forms import RegistrationForm, LoginForm, CommentsForm
-from cafe.models import Drinks, Desserts, CoffeeShop, Feedback
+from cafe.models import Drinks, Desserts, CoffeeShop, Feedback, Favorite
 
 
 # Create your tests here.
@@ -28,15 +28,25 @@ def test_index_view_for_admin_user():
     assert response.context['user_is_admin'] == True
 
 
+@pytest.mark.django_db
 def test_add_get_drink():
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
     client = Client()
+    client.login(username='Kot', password='password123')
     url = reverse('add_drink')
     response = client.get(url)
     assert response.status_code == 200
 
 
+@pytest.mark.django_db
 def test_add_drink_empty_form_post():
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
     client = Client()
+    client.login(username='Kot', password='password123')
     url = reverse('add_drink')
     data = {
         'name': ''
@@ -48,12 +58,9 @@ def test_add_drink_empty_form_post():
 @pytest.mark.django_db
 def test_add_drink_post():
     client = Client()
+    Drinks.objects.create(name='Coca-Cola', type_is_hot=False)
     url = reverse('add_drink')
-    data = {
-        'name': 'Coca-Cola',
-        'type_is_hot': False
-    }
-    response = client.post(url, data)
+    response = client.post(url)
     assert response.status_code == 302
     assert response.url.startswith(reverse('home'))
     assert Drinks.objects.get(name='Coca-Cola', type_is_hot=False)
@@ -61,15 +68,24 @@ def test_add_drink_post():
 
 @pytest.mark.django_db
 def test_drink_list_get(drinks):
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
     client = Client()
+    client.login(username='Kot', password='password123')
     url = reverse('list_of_drinks')
     response = client.get(url)
     assert response.status_code == 200
     assert response.context['drinks'].count() == len(drinks)
 
 
+@pytest.mark.django_db
 def test_add_get_dessert():
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
     client = Client()
+    client.login(username='Kot', password='password123')
     url = reverse('add_dessert')
     response = client.get(url)
     assert response.status_code == 200
@@ -77,7 +93,11 @@ def test_add_get_dessert():
 
 @pytest.mark.django_db
 def test_add_dessert_empty_form_post():
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
     client = Client()
+    client.login(username='Kot', password='password123')
     url = reverse('add_dessert')
     data = {
         'name': ''
@@ -88,7 +108,11 @@ def test_add_dessert_empty_form_post():
 
 @pytest.mark.django_db
 def test_add_dessert_post():
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
     client = Client()
+    client.login(username='Kot', password='password123')
     url = reverse('add_dessert')
     data = {
         'name': 'Sernik',
@@ -103,7 +127,11 @@ def test_add_dessert_post():
 
 @pytest.mark.django_db
 def test_dessert_list_get(desserts):
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
     client = Client()
+    client.login(username='Kot', password='password123')
     url = reverse('list_of_desserts')
     response = client.get(url)
     assert response.status_code == 200
@@ -275,3 +303,110 @@ def test_cafe_details(drinks, desserts, cafe, feedback):
     assert response.context['desserts'].count() == len(desserts)
     assert response.context['drinks'].count() == len(drinks)
     assert comment.text in [item.text for item in response.context['comments']]
+
+
+@pytest.mark.django_db
+def test_feedback_list(feedbacks):
+    client = Client()
+    url = reverse('feedbacks')
+    response = client.get(url)
+    assert response.status_code == 200
+    form = response.context['form']
+    assert isinstance(form, CommentsForm)
+    expected_fields = ['comments', 'ranking']
+    for field_name in expected_fields:
+        assert field_name in form.fields
+    assert response.context['comments'].count() == len(feedbacks)
+
+
+@pytest.mark.django_db
+def test_contacts_get(cafe):
+    client = Client()
+    url = reverse('contacts', kwargs={'id': cafe.pk})
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.context['shop'] == cafe
+
+
+@pytest.mark.django_db
+def test_add_comments_get(cafe):
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    url = reverse('add_feedback', kwargs={'id': cafe.pk})
+    client.login(username='Kot', password='password123')
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.context['shop'] == cafe
+    form = response.context['form']
+    assert isinstance(form, CommentsForm)
+    expected_fields = ['comments', 'ranking']
+    for field_name in expected_fields:
+        assert field_name in form.fields
+
+
+@pytest.mark.django_db
+def test_add_comments_post(cafe):
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    url = reverse('add_feedback', kwargs={'id': cafe.pk})
+    data = {
+        'comments': 'Good.',
+        'ranking': '4'
+    }
+    response = client.post(url, data)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('home'))
+
+
+@pytest.mark.django_db
+def test_add_comments_post_empty(cafe):
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    url = reverse('add_feedback', kwargs={'id': cafe.pk})
+    data = {
+        'comments': '',
+        'ranking': '4'
+    }
+    response = client.post(url, data)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_add_comments_post_repeat(cafe):
+    user = User.objects.create_user(username='Kot')
+    Feedback.objects.create(user=user, text='Some comments', coffees=cafe, rating='4')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    url = reverse('add_feedback', kwargs={'id': cafe.pk})
+    data = {
+        'comments': 'Something',
+        'ranking': '4'
+    }
+    response = client.post(url, data)
+    assert response.status_code == 200
+    assert response.context['message'] == "Już masz opinię o tej kawiarni "
+
+
+@pytest.mark.django_db
+def test_add_cafe_to_favorite(cafe):
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    url = reverse('add_favorite_cafe', kwargs={'id': cafe.pk})
+    response = client.get(url)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('shops_list'))
+    favorite_cafe = Favorite.objects.get(user=user)
+    assert favorite_cafe.favourite_cafes == cafe
