@@ -3,7 +3,8 @@ from django.http import request
 from django.test import TestCase, Client
 from django.urls import reverse
 import pytest
-from cafe.forms import RegistrationForm, LoginForm, CommentsForm, DrinksForm, DessertsForm
+from cafe.forms import RegistrationForm, LoginForm, CommentsForm, DrinksForm, DessertsForm, CoffeShopForm, \
+    SearchCoffeeForm
 from cafe.models import Drinks, Desserts, CoffeeShop, Feedback, Favorite
 
 
@@ -568,3 +569,321 @@ def test_update_dessert_empty(dessert):
     }
     response = client.post(url, form_data)
     assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_delete_drink(drink):
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    url = reverse('delete_drink', kwargs={'id': drink.pk})
+    response = client.get(url)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('list_of_drinks'))
+
+
+@pytest.mark.django_db
+def test_delete_dessert(dessert):
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    url = reverse('delete_dessert', kwargs={'id': dessert.pk})
+    response = client.get(url)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('list_of_desserts'))
+
+
+@pytest.mark.django_db
+def test_add_get_cafe():
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    url = reverse('add_coffeehouse')
+    response = client.get(url)
+    assert response.status_code == 200
+    form = response.context['form']
+    assert isinstance(form, CoffeShopForm)
+    expected_fields = ['name', 'description', 'drinks', 'desserts', 'adres', 'phone_number', 'district', 'ranking', 'start_of_work', 'end_of_work']
+    for field_name in expected_fields:
+        assert field_name in form.fields
+
+
+@pytest.mark.django_db
+def test_add_cafe_empty_form_post():
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    url = reverse('add_coffeehouse')
+    data = {
+        'name': ''
+    }
+    response = client.post(url, data)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_add_cafe_post(cafe):
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    url = reverse('add_coffeehouse')
+    form_data = {
+        'name': cafe.name,
+        'description': cafe.description,
+        'adres': cafe.adres,
+        'phone_number': cafe.phone_number,
+        'district': cafe.district,
+        'ranking': cafe.ranking,
+        'start_of_work': cafe.start_of_work,
+        'end_of_work': cafe.end_of_work
+    }
+    response = client.post(url, form_data)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('shops_list'))
+
+
+@pytest.mark.django_db
+def test_update_cafe_get(cafe):
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    url = reverse('update_cafe', kwargs={'id': cafe.pk})
+    response = client.get(url)
+    assert response.status_code == 200
+    form = response.context['form']
+    assert isinstance(form, CoffeShopForm)
+    expected_fields = ['name', 'description', 'drinks', 'desserts', 'adres', 'phone_number', 'district', 'ranking', 'start_of_work', 'end_of_work']
+    for field_name in expected_fields:
+        assert field_name in form.fields
+
+
+@pytest.mark.django_db
+def test_update_cafe_post(cafe):
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    url = reverse('update_cafe', kwargs={'id': cafe.pk})
+    form_data = {
+        'name': cafe.name,
+        'description': cafe.description,
+        'adres': cafe.adres,
+        'phone_number': cafe.phone_number,
+        'district': cafe.district,
+        'ranking': cafe.ranking,
+        'start_of_work': cafe.start_of_work,
+        'end_of_work': cafe.end_of_work
+    }
+    response = client.post(url, form_data)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('shops_list'))
+
+
+@pytest.mark.django_db
+def test_update_cafe_empty(cafe):
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    url = reverse('update_cafe', kwargs={'id': cafe.pk})
+    form_data = {
+        'name': '',
+        'description': cafe.description,
+    }
+    response = client.post(url, form_data)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_delete_cafe(cafe):
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    url = reverse('delete_cafe', kwargs={'id': cafe.pk})
+    response = client.get(url)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('shops_list'))
+
+
+@pytest.mark.django_db
+def test_search_cafe_get():
+    client = Client()
+    url = reverse('search')
+    response = client.post(url)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_search_cafe_without_choice():
+    client = Client()
+    url = reverse('search')
+    cafe1 = CoffeeShop.objects.create(
+            name='name 1',
+            description="abc",
+            adres="Legnicka",
+            phone_number="123456789",
+            district="Fabryczna",
+            start_of_work="09:00",
+            end_of_work="18:00"
+        )
+    cafe2 = CoffeeShop.objects.create(
+            name='name 2',
+            description="abc",
+            adres="Legnicka",
+            phone_number="123456789",
+            district="Psie Pole",
+            start_of_work="09:00",
+            end_of_work="18:00"
+        )
+    cafe3 = CoffeeShop.objects.create(
+            name='name 3',
+            description="abc",
+            adres="Legnicka",
+            phone_number="123456789",
+            district="Śródmieście",
+            start_of_work="09:00",
+            end_of_work="18:00"
+        )
+    cafe4 = CoffeeShop.objects.create(
+            name='name 4',
+            description="abc",
+            adres="Legnicka",
+            phone_number="123456789",
+            district="Stare Miasto",
+            start_of_work="09:00",
+            end_of_work="18:00"
+        )
+    cafe5 = CoffeeShop.objects.create(
+            name='name 5',
+            description="abc",
+            adres="Legnicka",
+            phone_number="123456789",
+            district="Krzyki",
+            start_of_work="09:00",
+            end_of_work="18:00"
+        )
+    data = {}
+    response = client.post(url, data)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_search_cafe_with_choice():
+    client = Client()
+    url = reverse('search')
+    cafe1 = CoffeeShop.objects.create(
+            name='name 1',
+            description="abc",
+            adres="Legnicka",
+            phone_number="123456789",
+            district="Fabryczna",
+            start_of_work="09:00",
+            end_of_work="18:00"
+        )
+    cafe2 = CoffeeShop.objects.create(
+            name='name 2',
+            description="abc",
+            adres="Legnicka",
+            phone_number="123456789",
+            district="Psie Pole",
+            start_of_work="09:00",
+            end_of_work="18:00"
+        )
+    cafe3 = CoffeeShop.objects.create(
+            name='name 3',
+            description="abc",
+            adres="Legnicka",
+            phone_number="123456789",
+            district="Śródmieście",
+            start_of_work="09:00",
+            end_of_work="18:00"
+        )
+    cafe4 = CoffeeShop.objects.create(
+            name='name 4',
+            description="abc",
+            adres="Legnicka",
+            phone_number="123456789",
+            district="Stare Miasto",
+            start_of_work="09:00",
+            end_of_work="18:00"
+        )
+    cafe5 = CoffeeShop.objects.create(
+            name='name 5',
+            description="abc",
+            adres="Legnicka",
+            phone_number="123456789",
+            district="Krzyki",
+            start_of_work="09:00",
+            end_of_work="18:00"
+        )
+    data = {'stare_miasto': 'on',
+            'krzyki': 'on',
+            'fabryczna': 'on'}
+    response = client.post(url, data)
+    assert response.status_code == 200
+    assert response.context['cafes'].count() == 3
+
+
+@pytest.mark.django_db
+def test_search_drink_get():
+    client = Client()
+    url = reverse('search_drink')
+    response = client.get(url)
+    assert response.status_code == 200
+    form = response.context['form']
+    assert isinstance(form, SearchCoffeeForm)
+    expected_fields = ['drink']
+    for field_name in expected_fields:
+        assert field_name in form.fields
+
+
+@pytest.mark.django_db
+def test_search_drink_post(drink, cafe):
+    client = Client()
+    url = reverse('search_drink')
+    cafe.drinks.add(drink)
+    data = {
+        'drink': drink
+    }
+    response = client.post(url, data)
+    assert response.status_code == 200
+    form = response.context['form']
+    assert isinstance(form, SearchCoffeeForm)
+    expected_fields = ['drink']
+    for field_name in expected_fields:
+        assert field_name in form.fields
+    assert response.context['cafes'].count() == 1
+
+
+@pytest.mark.django_db
+def test_search_drink_empty(drink, cafe):
+    client = Client()
+    url = reverse('search_drink')
+    cafe.drinks.add(drink)
+    data = {
+        'drink': 'Herbata'
+    }
+    response = client.post(url, data)
+    assert response.status_code == 200
+    form = response.context['form']
+    assert isinstance(form, SearchCoffeeForm)
+    expected_fields = ['drink']
+    for field_name in expected_fields:
+        assert field_name in form.fields
+    assert response.context['message'] == "Nie ma na naszej stronie kawiarni z napojem 'Herbata'."
