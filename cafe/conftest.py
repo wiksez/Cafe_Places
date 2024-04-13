@@ -81,3 +81,15 @@ def favorites(user, cafe):
     dessert = Desserts.objects.create(name="sernik")
     my_favorite = Favorite.objects.create(user=user, favourite_cafes=cafe, favourite_desserts=dessert, favourite_drinks=drink)
     return my_favorite
+
+
+@pytest.fixture
+def drink():
+    drink = Drinks.objects.create(name="Cola")
+    return drink
+
+
+@pytest.fixture
+def dessert():
+    drink = Desserts.objects.create(name="Sernik", description='pyszny', composition='cream')
+    return drink

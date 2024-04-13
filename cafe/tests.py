@@ -3,7 +3,7 @@ from django.http import request
 from django.test import TestCase, Client
 from django.urls import reverse
 import pytest
-from cafe.forms import RegistrationForm, LoginForm, CommentsForm
+from cafe.forms import RegistrationForm, LoginForm, CommentsForm, DrinksForm, DessertsForm
 from cafe.models import Drinks, Desserts, CoffeeShop, Feedback, Favorite
 
 
@@ -456,3 +456,115 @@ def test_my_profile(favorites, user, cafe, feedback):
     assert favorites.favourite_desserts in [item.favourite_desserts for item in response.context['my_dessert']]
     assert feedback.text in [item.text for item in response.context['my_comments']]
 
+
+@pytest.mark.django_db
+def test_admin_profil():
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    url = reverse('admin_profile')
+    response = client.get(url)
+    assert response.status_code == 302
+
+
+@pytest.mark.django_db
+def test_update_drink_get(drink):
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    url = reverse('update_drink', kwargs={'id': drink.pk})
+    response = client.get(url)
+    assert response.status_code == 200
+    form = response.context['form']
+    assert isinstance(form, DrinksForm)
+    expected_fields = ['name', 'type_is_hot']
+    for field_name in expected_fields:
+        assert field_name in form.fields
+
+
+@pytest.mark.django_db
+def test_update_drink_post(drink):
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    url = reverse('update_drink', kwargs={'id': drink.pk})
+    form_data = {
+        'name': drink.name,
+        'type_is_hot': drink.type_is_hot
+    }
+    response = client.post(url, form_data)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('list_of_drinks'))
+
+
+@pytest.mark.django_db
+def test_update_drink_empty(drink):
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    url = reverse('update_drink', kwargs={'id': drink.pk})
+    form_data = {
+        'name': '',
+        'type_is_hot': drink.type_is_hot
+    }
+    response = client.post(url, form_data)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_update_dessert_get(dessert):
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    url = reverse('update_dessert', kwargs={'id': dessert.pk})
+    response = client.get(url)
+    assert response.status_code == 200
+    form = response.context['form']
+    assert isinstance(form, DessertsForm)
+    expected_fields = ['name', 'description', 'composition']
+    for field_name in expected_fields:
+        assert field_name in form.fields
+
+
+@pytest.mark.django_db
+def test_update_dessert_post(dessert):
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    url = reverse('update_dessert', kwargs={'id': dessert.pk})
+    form_data = {
+        'name': dessert.name,
+        'description': dessert.description,
+        'composition': dessert.composition
+    }
+    response = client.post(url, form_data)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('list_of_desserts'))
+
+
+@pytest.mark.django_db
+def test_update_dessert_empty(dessert):
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    url = reverse('update_dessert', kwargs={'id': dessert.pk})
+    form_data = {
+        'name': dessert.name,
+        'description': '',
+        'composition': dessert.composition
+    }
+    response = client.post(url, form_data)
+    assert response.status_code == 200
