@@ -410,3 +410,49 @@ def test_add_cafe_to_favorite(cafe):
     assert response.url.startswith(reverse('shops_list'))
     favorite_cafe = Favorite.objects.get(user=user)
     assert favorite_cafe.favourite_cafes == cafe
+
+
+@pytest.mark.django_db
+def test_add_drink_to_my_favorite():
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    drink = Drinks.objects.create(name="Herbata")
+    url = reverse('add_favorite_drink', kwargs={'id': drink.pk})
+    response = client.get(url)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('my_profile'))
+    favorite_drink = Favorite.objects.get(user=user)
+    assert favorite_drink.favourite_drinks == drink
+
+
+@pytest.mark.django_db
+def test_add_dessert_to_my_favorite():
+    user = User.objects.create_user(username='Kot')
+    user.set_password('password123')
+    user.save()
+    client = Client()
+    client.login(username='Kot', password='password123')
+    dessert = Desserts.objects.create(name="Sernik")
+    url = reverse('add_favorite_dessert', kwargs={'id': dessert.pk})
+    response = client.get(url)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('my_profile'))
+    favorite_dessert = Favorite.objects.get(user=user)
+    assert favorite_dessert.favourite_desserts == dessert
+
+
+@pytest.mark.django_db
+def test_my_profile(favorites, user, cafe, feedback):
+    client = Client()
+    client.login(username='Cukier', password='qwerty1')
+    url = reverse('my_profile')
+    response = client.get(url)
+    assert response.status_code == 200
+    assert favorites.favourite_cafes in [item.favourite_cafes for item in response.context['my_cafe']]
+    assert favorites.favourite_drinks in [item.favourite_drinks for item in response.context['my_drink']]
+    assert favorites.favourite_desserts in [item.favourite_desserts for item in response.context['my_dessert']]
+    assert feedback.text in [item.text for item in response.context['my_comments']]
+

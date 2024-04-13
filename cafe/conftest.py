@@ -1,7 +1,7 @@
 import pytest
 from django.contrib.auth.models import User
 
-from cafe.models import Drinks, Desserts, CoffeeShop, Feedback
+from cafe.models import Drinks, Desserts, CoffeeShop, Feedback, Favorite
 
 
 @pytest.fixture
@@ -73,3 +73,11 @@ def feedbacks(cafe):
         user.save()
         comments.append(Feedback.objects.create(user=user, text=x, coffees=cafe, rating=x))
     return comments
+
+
+@pytest.fixture
+def favorites(user, cafe):
+    drink = Drinks.objects.create(name="Cola")
+    dessert = Desserts.objects.create(name="sernik")
+    my_favorite = Favorite.objects.create(user=user, favourite_cafes=cafe, favourite_desserts=dessert, favourite_drinks=drink)
+    return my_favorite
